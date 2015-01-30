@@ -1,105 +1,11 @@
+
 # ------------------------------------------------------------
 #   This file contains a set of automated tasks.
 #   See project documentation at: doc/index.html
+#   
+#   Run `rake` from the command line to compile this project.
+#   
+#   Run `rake --task` from the command line to see all
+#   available tasks for this project.
 # ------------------------------------------------------------
-
-require 'rspec/core/rake_task'
-require 'yard'
-require 'netlinx/rake/src'
-
-
-task :default=>[:compile, :pack]
-
-
-# Generate Netlinx source code files from the erb template files
-task :generate_erb do
-  require 'erb'
-  
-  puts "Generating NetLinx files from ERB..."
-  puts "------------------------------------"
-  
-  templates = Dir['include/**/*.erb']
-
-  outputs = templates.map { |str| str.gsub /\.erb$/, '' }
-
-  templates.each do |template|
-    file_name = template.gsub /\.erb$/, ''
-    puts "   #{file_name}"
-    
-    header = $AUTOGEN_HEADER = <<-HEADER
-(***********************************************************)
-(*                         WARNING                         *)
-(***********************************************************}
-    This file was generated from the following template
-    and should NOT be edited directly: 
-    
-      #{template}
-    
-    See the documentation at `doc/index.html` for
-    information about maintaining this project.
-{***********************************************************)
-
-HEADER
-    buffer = header + File.read(template)
-    
-    File.open file_name, 'w+' do |file|
-      file.write ERB.new(buffer, nil, '%<>-').result()
-    end
-  end
-  
-  puts "\nDone."
-end
-
-task :generate_rpc => :generate_erb do
-  require './lib/rpc'
-  
-  puts "\n\nGenerating RPC functions..."
-  
-  RPC.build
-  
-  puts "Done."
-end
-
-# Compile to deployable code from the source code files in the given workspace
-task :compile => :generate_rpc do
-  workspace = Dir.glob("*.apw").first
-  
-  puts "\n\nLaunching NetLinx compiler...\n\n"
-  system "netlinx-compile --smart -s \"#{workspace}\""
-end
-
-# Run Ruby tests.
-RSpec::Core::RakeTask.new :test => :doc do |t|
-  puts "\n\n"
-  t.rspec_opts = '--color'
-end
-
-# Generate Ruby documentation.
-YARD::Rake::YardocTask.new :doc do |t|
-  puts "\n"
-  # t.options = %w(- README.md)
-end
-
-# Lines of code for .axi files.
-task :lines do
-  require 'netlinx/workspace'
-  
-  workspace_path = Dir['*.apw'].first
-  workspace = NetLinx::Workspace.new file: workspace_path
-  file_paths = workspace.projects.first.systems.first.files
-    .map(&:path)
-    .select { |path| File.extname(path) == '.axs' or File.extname(path) == '.axi' }
-  
-  puts "\n\nLines of code..."
-    puts "----------------"
-  
-  lines_by_path = file_paths.map { |path| {path: path, lines: File.read(path).lines.count} }
-  lines_by_path.each do |line_by_path|
-    puts "#{line_by_path[:lines]}\t#{line_by_path[:path]}"
-  end
-  
-  puts "-----\t--------------------"
-  total = 0
-  lines_by_path.map { |l| l[:lines] }.each { |lines| total += lines }
-  puts "#{total}\tTotal"
-end
+require 'netlinx/rake/erb'
