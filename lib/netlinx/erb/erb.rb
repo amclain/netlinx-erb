@@ -1,4 +1,6 @@
 
+require_relative 'helpers'
+
 module NetLinx
   module ERB
     
@@ -6,8 +8,9 @@ module NetLinx
     # @example
     #   ERB.new(buffer, nil, '%<>-').result(NetLinx::ERB.binding)
     def self.binding
-      Module.new.instance_eval {
+      @b ||= Module.new.instance_eval {
         extend NetLinx::ERB::Helpers
+        # TODO: _config.rb instance variables should be injected here.
         binding
       }
     end

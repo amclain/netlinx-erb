@@ -21,7 +21,7 @@ module NetLinx
             require 'netlinx-erb'
             puts "\n\nGenerating RPC functions..."
             RPC.build
-            puts "Done."
+            puts "Done.\n\n"
           end
         end
         
