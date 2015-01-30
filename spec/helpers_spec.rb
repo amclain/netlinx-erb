@@ -1,11 +1,11 @@
 
-describe Helpers do
+describe NetLinx::ERB::Helpers do
   
   let(:dvTP) { 'dvTP_ADMIN_1' }
   
   subject {
     Object.new.tap do |o|
-      o.extend Helpers
+      o.extend NetLinx::ERB::Helpers
       o.instance_variable_set :@dvTP, dvTP
     end
   }

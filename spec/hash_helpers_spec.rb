@@ -1,7 +1,7 @@
 
-describe HashHelpers do
+describe NetLinx::ERB::HashHelpers do
   
-  subject { Hash.new.extend HashHelpers }
+  subject { Hash.new.extend NetLinx::ERB::HashHelpers }
   
   before {
     Hash.instance_variable_set :@tmpl_suffix, suffix
