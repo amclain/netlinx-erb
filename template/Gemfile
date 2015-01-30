@@ -1,0 +1,12 @@
+source "https://rubygems.org"
+
+gem 'netlinx-workspace'
+gem 'netlinx-compile'
+gem 'netlinx-src'
+
+# Development Tools
+gem 'rake'
+gem 'rspec'
+gem 'rspec-its'
+gem 'fivemat'
+gem 'yard'
