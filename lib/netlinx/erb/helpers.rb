@@ -1,4 +1,5 @@
 
+require_relative 'erb'
 require_relative 'hash_helpers'
 
 module NetLinx
@@ -318,7 +319,8 @@ EOS
       # @raise [LoadError] template not found
       def execute_erb template_file
         raise LoadError, "Template not found: #{template_file}" unless File.exists? template_file
-        $AUTOGEN_HEADER + ::ERB.new(File.read(template_file), nil, '%<>-').result()
+        $AUTOGEN_HEADER + ::ERB.new(File.read(template_file), nil, '%<>-')
+          .result(NetLinx::ERB.binding)
       end
       
       
