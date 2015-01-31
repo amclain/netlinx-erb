@@ -29,9 +29,10 @@ In addition to the AMX developer tools, the following are required:
 
 [NetLinx ERB](https://github.com/amclain/netlinx-erb) is the code generation
 framework used by this project. The installation process below should
-automatically install this package. For information regarding its usage, see the
-[NetLinx ERB documentation](https://github.com/amclain/netlinx-erb/blob/master/README.md).
+automatically install this package. For information regarding its usage, see:
 
+* [Readme](https://github.com/amclain/netlinx-erb/blob/master/README.md)
+* [API Documentation](http://www.rubydoc.info/gems/netlinx-erb)
 
 ### Ruby Installer
 
@@ -57,7 +58,7 @@ From the command line:
 
 From the command line in the project's `amx` directory:
 
-	bundle update
+	bundle
 	bundle exec rake
 
 The files will be auto-generated and compiled, at which point
