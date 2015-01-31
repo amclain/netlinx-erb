@@ -25,6 +25,14 @@ build tools, which are listed below.
 In addition to the AMX developer tools, the following are required:
 
 
+### NetLinx ERB
+
+[NetLinx ERB](https://github.com/amclain/netlinx-erb) is the code generation
+framework used by this project. The installation process below should
+automatically install this package. For information regarding its usage, see the
+[NetLinx ERB documentation](https://github.com/amclain/netlinx-erb/blob/master/README.md).
+
+
 ### Ruby Installer
 
 > http://rubyinstaller.org/downloads
