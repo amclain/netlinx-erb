@@ -13,10 +13,12 @@ Syntax highlighting is included in [sublime-netlinx](https://github.com/amclain/
 ## Overview
 
 Use a descriptive syntax...
-![ERB Template](screenshots/example_erb.png)
+
+[![ERB Template](screenshots/example_erb.png)](https://github.com/amclain/netlinx-erb/blob/master/screenshots/example_erb.png)
 
 To generate repetitive NetLinx code...
-![Generated AXI File](screenshots/example_axi.png)
+
+[![Generated AXI File](screenshots/example_axi.png)](https://github.com/amclain/netlinx-erb/blob/master/screenshots/example_axi.png)
 
 With netlinx-erb, configuration is separated from implementation. For example,
 touch panel button numbers and video inputs (configuration) are separated from
@@ -41,6 +43,30 @@ Since the implementation code for this change is auto-generated, and we know
 that the implementation code works correctly, it is unlikely that this change
 will create any bugs. There is a clear advantage to this method as the amount
 of code grows and the project becomes more complex.
+
+### RPC
+
+A remote procedure call (RPC) mechanism is included to be able to call NetLinx
+functions through ICSLan (NetLinx Diagnostics, Telnet, etc.). To issue an RPC
+function call, `send_string` to `34500:1:0`. The body of the string should
+start with the name of the function, followed by a space-separated list of
+arguments.
+
+For the following function:
+
+```c
+define_function patch_video(integer input, integer output)
+{
+    // Patch video matrix.
+}
+```
+
+`patch_video 1 2` is the RPC string that would patch video input 1 to output 2.
+
+
+### Backward Compatibility
+
+
 
 
 ## Installation
