@@ -13,10 +13,10 @@ Syntax highlighting is included in [sublime-netlinx](https://github.com/amclain/
 ## Overview
 
 Use a descriptive syntax...
-[ERB Template](screenshots/example_erb.png)
+![ERB Template](screenshots/example_erb.png)
 
 To generate repetative NetLinx code...
-[Generated AXI File](screenshots/example_axi.png)
+![Generated AXI File](screenshots/example_axi.png)
 
 With netlinx-erb, configuration is separated from implementation. For example,
 touch panel button numbers and video inputs (configuration) are separated from
