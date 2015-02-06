@@ -1,6 +1,7 @@
 # Ruby
 \.gem$
 \.lock$
+\.zip$
 doc/
 
 # NetLinx Binaries

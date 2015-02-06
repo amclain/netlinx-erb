@@ -12,18 +12,17 @@ Gem::Specification.new do |s|
   s.license   = 'MIT'
   
   s.files     =
-    ['license.txt', 'README.md'] +
+    ['license.txt', 'README.md', 'template.zip'] +
     Dir[
       'bin/**/*',
       'lib/**/*',
       'doc/**/*',
-      'template/**/*',
     ]
   
   s.executables = []
   
   s.add_dependency 'netlinx-compile',   '~> 3.1'
-  s.add_dependency 'netlinx-workspace', '~> 0.3.0'
+  s.add_dependency 'netlinx-workspace', '~> 0.3'
   s.add_dependency 'netlinx-src',       '~> 0.3'
   
   s.add_dependency 'rake',              '~> 10.4'
