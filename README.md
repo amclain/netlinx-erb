@@ -94,6 +94,30 @@ GitHub repositories.
 
 ## Installation
 
+netlinx-erb is available as a Ruby gem.
+
+1. Install [Ruby](http://www.ruby-lang.org/en/downloads/) 2.1.5 or higher.
+    * Windows: Use [RubyInstaller](http://rubyinstaller.org/downloads/)
+        and make sure ruby/bin is in your [system path](http://www.computerhope.com/issues/ch000549.htm).
+    * Linux: Use [rbenv](https://github.com/sstephenson/rbenv#basic-github-checkout).
+    
+2. Open the [command line](http://www.addictivetips.com/windows-tips/windows-7-elevated-command-prompt-in-context-menu/)
+    and type:
+
+    ***gem install netlinx-erb***
+
+
+*NOTE: The NetLinx compiler executable provided by AMX, nlrc.exe, must be
+installed on your computer for this utility to work. It is included in the
+NetLinx Studio installation by default.*
+
+**If you receive the following error when running gem install:**
+`Unable to download data from https://rubygems.org/ - SSL_connect returned=1`
+
+Follow this guide:
+[Workaround RubyGems' SSL errors on Ruby for Windows (RubyInstaller)](https://gist.github.com/luislavena/f064211759ee0f806c88)
+
+
 ## Prerequisite Knowledge
 
 ## Getting Started
