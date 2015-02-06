@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 require 'optparse'
+require 'fileutils'
+require 'zip'
 
 $0 = 'netlinx-erb'
 
@@ -13,10 +15,30 @@ OptionParser.new do |opts|
     exit
   end
   
-  opts.on '-n', '--new [path]', 'Create a new project.' do |path|
-    # TODO: Implement create new
-    puts "Create new."
-    p path
+  opts.on '-n', '--new [name]', 'Create a new project.' do |name|
+    puts "Creating workspace..."
+    
+    Dir.mkdir name if name and not Dir.exists? name
+    
+    name ||= '.'
+    
+    FileUtils.chdir name do
+      if File.exists? 'Rakefile'
+        puts "Project already exists.\nAborted."
+        exit
+      end
+      
+      gem_spec = Gem::Specification.find_by_name 'netlinx-erb'
+      template_path = "#{gem_spec.gem_dir}/template.zip"
+      
+      Zip::File.open template_path do |zip|
+        zip.each do |file|
+          file.extract
+        end
+      end
+    end
+    
+    puts "Done."
   end
   
 end.parse! ARGV
