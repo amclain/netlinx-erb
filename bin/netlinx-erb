@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+require 'optparse'
+
+$0 = 'netlinx-erb'
+
+ARGV << '-h' if ARGV.empty?
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: netlinx-erb [options]"
+  
+  opts.on '-h', '--help', 'Display this help screen.' do
+    puts opts
+    exit
+  end
+  
+  opts.on '-n', '--new [path]', 'Create a new project.' do |path|
+    # TODO: Implement create new
+    puts "Create new."
+    p path
+  end
+  
+end.parse! ARGV

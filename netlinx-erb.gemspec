@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
       'doc/**/*',
     ]
   
-  s.executables = []
+  s.executables = ['netlinx-erb']
   
   s.add_dependency 'netlinx-compile',   '~> 3.1'
   s.add_dependency 'netlinx-workspace', '~> 0.3'
