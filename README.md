@@ -96,7 +96,7 @@ GitHub repositories.
 
 netlinx-erb is available as a Ruby gem.
 
-1. Install [Ruby](http://www.ruby-lang.org/en/downloads/) 2.1.5 or higher.
+1. Install [Ruby](https://www.ruby-lang.org) 2.1.5 or higher.
     * Windows: Use [RubyInstaller](http://rubyinstaller.org/downloads/)
         and make sure ruby/bin is in your [system path](http://www.computerhope.com/issues/ch000549.htm).
     * Linux: Use [rbenv](https://github.com/sstephenson/rbenv#basic-github-checkout).
@@ -119,6 +119,15 @@ Follow this guide:
 
 
 ## Prerequisite Knowledge
+
+netlinx-erb is a complex utility and does have a learning curve. However, the
+time invested in learning this utility pays off in time saved from generating
+code that would otherwise be handwritten, and troubleshooting fewer bugs. Due
+to this, project maintenance also becomes easier.
+
+Basic experience with the [Ruby programming language](https://www.ruby-lang.org)
+is required, as well as [ERB templating](http://www.stuartellis.eu/articles/erb/).
+
 
 ## Getting Started
 
