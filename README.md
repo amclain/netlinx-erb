@@ -6,6 +6,7 @@ A code generation utility for AMX NetLinx control systems.
 
 [![Gem Version](https://badge.fury.io/rb/netlinx-erb.svg)](http://badge.fury.io/rb/netlinx-erb)
 [![API Documentation](http://img.shields.io/badge/docs-api-blue.svg)](http://www.rubydoc.info/gems/netlinx-erb)
+[![MIT License](https://img.shields.io/badge/license-MIT-yellowgreen.svg)](https://github.com/amclain/netlinx-erb/blob/master/license.txt)
 
 Syntax highlighting is included in [sublime-netlinx](https://github.com/amclain/sublime-netlinx).
 
@@ -127,6 +128,12 @@ to this, project maintenance also becomes easier.
 
 Basic experience with the [Ruby programming language](https://www.ruby-lang.org)
 is required, as well as [ERB templating](http://www.stuartellis.eu/articles/erb/).
+
+**Resources:**
+
+* [Head First Ruby](http://shop.oreilly.com/product/9780596803995.do)
+* [Design Patterns in Ruby](http://www.amazon.com/Design-Patterns-Ruby-Russ-Olsen/dp/0321490452/ref=sr_1_1?ie=UTF8&qid=1424904889&sr=8-1&keywords=ruby+design+patterns)
+* [Practical Object-Oriented Design in Ruby](http://www.amazon.com/Practical-Object-Oriented-Design-Ruby-Addison-Wesley/dp/0321721330/ref=sr_1_2?ie=UTF8&qid=1424904889&sr=8-2&keywords=ruby+design+patterns)
 
 
 ## Getting Started
