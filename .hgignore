@@ -2,6 +2,7 @@
 \.gem$
 \.lock$
 \.zip$
+coverage/
 doc/
 
 # NetLinx Binaries
