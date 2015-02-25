@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'optparse'
-require 'fileutils'
+require 'rake'
 require 'zip'
 
 $0 = 'netlinx-erb'
@@ -22,11 +22,15 @@ OptionParser.new do |opts|
     
     name ||= '.'
     
-    FileUtils.chdir name do
+    Dir.chdir name do
       if File.exists? 'Rakefile'
         puts "Project already exists.\nAborted."
         exit
       end
+      
+      require 'netlinx/rake/workspace/create_workspace_config'
+      NetLinx::Rake::Workspace::CreateWorkspaceConfig.new
+      Rake.application['create_workspace_config'].invoke
       
       gem_spec = Gem::Specification.find_by_name 'netlinx-erb'
       template_path = "#{gem_spec.gem_dir}/template.zip"
