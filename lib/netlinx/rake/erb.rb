@@ -1,7 +1,8 @@
 
 require 'yard'
 require 'netlinx/rake/compile'
-require 'netlinx/rake/workspace'
+require 'netlinx/rake/workspace/create_workspace_config'
+require 'netlinx/rake/workspace/generate_apw'
 require 'netlinx/rake/src'
 
 require_relative 'erb/generate_erb'
@@ -13,7 +14,10 @@ task :default=>[:generate_rpc, :check_for_docs, :compile, :pack]
 
 NetLinx::Rake::ERB::Lines.new
 NetLinx::Rake::ERB::GenerateERB.new
-NetLinx::Rake::ERB::GenerateRPC.new :generate_rpc => :generate_erb
+NetLinx::Rake::ERB::GenerateRPC.new :generate_rpc => :generate_apw
+
+NetLinx::Rake::Workspace::CreateWorkspaceConfig.new
+NetLinx::Rake::Workspace::GenerateAPW.new :generate_apw => :generate_erb
 
 # Generate Ruby documentation.
 YARD::Rake::YardocTask.new :doc do |t|

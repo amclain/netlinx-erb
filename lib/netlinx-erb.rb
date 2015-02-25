@@ -9,6 +9,14 @@ require_relative 'netlinx/erb/rpc'
 
 # :nodoc:
 module NetLinx
+  # NetLinx code generation.
   module ERB
+  end
+  
+  # :nodoc:
+  module Rake
+    # NetLinx code generation rake tasks.
+    module ERB
+    end
   end
 end
