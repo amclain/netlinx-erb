@@ -61,8 +61,8 @@ class RPC
 
 
     # Pull file list from workspace.
-    workspace_path = Dir['*.apw'].first
-    workspace = NetLinx::Workspace.new file: workspace_path
+    workspace = NetLinx::Workspace.search
+    raise Errno::ENOENT, 'Workspace not found.' unless workspace
 
     file_paths = workspace.projects.first.systems.first.files
       .map(&:path)
