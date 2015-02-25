@@ -35,42 +35,42 @@ class RPC
       Does not have to exist.
     )
     ^(?<desc>[\t ]*\/\*(?:[^\*]|\*[^\/])*\*\/)?\s*
-
+    
     (?# Find the function definition. )
     define_function\s+
-
+    
     (?# Capture function's return type, if it exists.)
     (?<rtn>\w+(?<width>\[\d+\])?)??\s*
-
+    
     (?# Capture the function name. )
     (?<name>\w+)
-
+    
     (?#
       Capture the function parameters.
       Run this through another regex to get the type\\name pairs.
     )
     \(\s*(?<params>.*?)\s*\)\s*
-
+    
     (?# Capture the function's source code. )
     {[\r\n]*(?<code>(?:.|\r|\n)*?)?[\r\n]*}
     /x
-
+    
     param_exp = /\s*(?:(?<type>\w+)\s+(?<name>\w+(?<width>\[\d*\])?)),?\s*/
-
+    
     sections = {} # Collect a set of matches for each file, separated by file.
-
-
+    
+    
     # Pull file list from workspace.
     workspace = NetLinx::Workspace.search
     raise Errno::ENOENT, 'Workspace not found.' unless workspace
-
+    
     file_paths = workspace.projects.first.systems.first.files
       .map(&:path)
       .select { |path| path =~ /(\.axi|\.axs)$/ }
       .reject { |path| path =~ /rpc(?:-|_.*?)?\.axi/ } # Remove RPC files.
-
+    
     # file_paths = Dir['**/*.axi']
-
+    
     file_paths.each do |f|
       str = File.open(f.gsub('\\', '/'), "r:iso-8859-1").read
       matches = []
@@ -82,47 +82,47 @@ class RPC
       
       sections[f] = matches
     end
-
+    
     # -----------------------
     # Documentation Generator
     # -----------------------
-
+    
     # output = ''
     # sections.each do |name, matches|
-      
+    
     #   output << "--------------------------------------------------\n"
     #   output << "FILE: '#{name}'\n"
     #   output << "--------------------------------------------------\n"
     #   output << "\n\n"
-      
+    
     #   matches.each do |m|
     #     output << m[:desc].to_s
     #     output << "\n"
     #     output << m[:name].to_s
     #     output << "\n\n\n"
     #   end
-      
+    
     # end
-
+    
     # File.open('functions.axi', 'w+') { |f| f << output }
-
-
+    
+    
     # ----------------------
     # RPC Function Generator
     # ----------------------
-
+    
     # Generate list of included and excluded files for sanity check.
     directory_files = Dir['**/*.axi'] + Dir['**/*.axs']
-
+    
     included_files  = ''
     file_paths.each { |path| included_files << path.to_s.gsub('\\', '/') + "\n" } # TODO: As string.
-
+    
     excluded_files  = ''
     (directory_files - file_paths.map { |path| path.gsub '\\', '/' }).each { |path| excluded_files << path.to_s.gsub('\\', '/') + "\n" }
-
+    
     fn_symbols = [] # Symbol names to avoid duplicates.
     output = ''
-
+    
     output << <<-EOS
 (***********************************************************)
 (*                         WARNING                         *)
@@ -208,9 +208,9 @@ EOS
         
         fn_output << "#{fn[:name]}("
         fn_output << ");\n" if params.empty?
-
+        
         function_valid = false unless [nil, :integer].include? return_type
-          
+        
         # Generate parameters.
         param_index = 0
         params.each do |param|
@@ -247,7 +247,7 @@ EOS
         end
         
         fn_output << "        }\n\n"
-
+        
         # Store function string.
         if function_valid
           output << fn_output 
@@ -258,12 +258,12 @@ EOS
       end
       
     end
-
+    
     output << "    }\n"
     output << "}\n"
     output << "#end_if\n\n"
-
-
+    
+    
     File.open('include/rpc-functions.axi', 'w+') { |f| f << output }
   end
   
