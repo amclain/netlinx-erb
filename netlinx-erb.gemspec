@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.executables = ['netlinx-erb']
   
   s.add_dependency 'netlinx-compile',   '~> 3.1'
-  s.add_dependency 'netlinx-workspace', '~> 0.3'
+  s.add_dependency 'netlinx-workspace', '~> 1.0'
   s.add_dependency 'netlinx-src',       '~> 0.3'
   
   s.add_dependency 'rake',              '~> 10.4'

@@ -1,6 +1,7 @@
 
 require 'yard'
 require 'netlinx/rake/compile'
+require 'netlinx/rake/workspace'
 require 'netlinx/rake/src'
 
 require_relative 'erb/generate_erb'
