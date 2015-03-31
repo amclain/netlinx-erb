@@ -41,6 +41,11 @@ module NetLinx
             
             sleep 0.25 # Let process terminate.
             
+            # TODO: Implement ENV['NETLINX_ACTIVE_SYSTEM_ONLY']
+            # TODO: Implement filtering by type:
+            #   code, master files (code, IR), touch panels,
+            #   specific touch panel/device
+            
             Dir["*.apw"].first.tap do |apw_file|
               unless apw_file
                 puts "NetLinx workspace file not found."
