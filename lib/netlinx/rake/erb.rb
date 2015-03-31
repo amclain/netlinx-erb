@@ -8,6 +8,7 @@ require 'netlinx/rake/src'
 require_relative 'erb/generate_erb'
 require_relative 'erb/generate_rpc'
 require_relative 'erb/lines'
+require_relative 'erb/push'
 
 
 task :default=>[:generate_rpc, :check_for_docs, :compile, :pack]
@@ -15,6 +16,7 @@ task :default=>[:generate_rpc, :check_for_docs, :compile, :pack]
 NetLinx::Rake::ERB::Lines.new
 NetLinx::Rake::ERB::GenerateERB.new
 NetLinx::Rake::ERB::GenerateRPC.new :generate_rpc => :generate_apw
+NetLinx::Rake::ERB::Push.new
 
 NetLinx::Rake::Workspace::CreateWorkspaceConfig.new
 NetLinx::Rake::Workspace::GenerateAPW.new :generate_apw => :generate_erb
