@@ -31,6 +31,7 @@ module NetLinx
             # kill signal, so the /f flag is used to force termination.
             # 
             # Reported to AMX support on 2015-03-30.
+            # Escalation# 26107
             # If you encounter this bug, report it to AMX:
             # Support@amx.com or 1-800-932-6993
             if Gem.win_platform?
