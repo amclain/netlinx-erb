@@ -162,6 +162,47 @@ many of the tools that netlinx-erb is built on use command line interfaces.
 SS64 is a great [command line reference](http://ss64.com/).
 
 
+## Workflow
+
+Developing a NetLinx project with netlinx-erb is significantly different than
+with NetLinx Studio. Although netlinx-erb and NetLinx Studio are not strictly
+mutually exclusive, trying to use NetLinx Studio to develop a netlinx-erb
+project will create unnecessary friction.
+
+There are three applications you will bounce between when developing a
+netlinx-erb project:
+
+* Text Editor
+* Command Prompt
+* Source Control Management System
+
+At times you may need to open some of the standalone NetLinx tools like
+NetLinx Diagnostics.
+
+### Transitioning From NetLinx Studio
+
+The big difference to understand coming from NetLinx Studio is that NetLinx
+Studio is designed to be a monolithic, all-in-one application that contains
+all of the features that you need. Or at least that's the theory. The problem
+is that in reality NetLinx Studio only contains the features that AMX thinks
+you need, and can't support features you want to add yourself.
+
+What happens when you want to add code generation and automation to NetLinx
+Studio to save time on repetitive tasks? Well, you can't.
+
+netlinx-erb takes the opposite approach, building on many different components
+that are smaller in scope. To the greatest extent possible, these components
+are extendable, customizable, and cross-platform. This means you're able to
+modify a netlinx-erb development environment to suit a particular project, or
+your workflow in general.
+
+Integrating with source control management (SCM) systems like [Mercurial](http://tortoisehg.bitbucket.org/)
+and [Git](http://git-scm.com/) was also an important goal of netlinx-erb. Due
+to this, most files are plain text and typically easy to read by a human. The
+philosophy is that configuration should happen in your text editor, not a
+proprietary GUI.
+
+
 ## Getting Started
 
 ## Code Examples
