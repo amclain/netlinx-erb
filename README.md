@@ -245,7 +245,7 @@ Now create `My Project.axs` and `include/cable_box.axi`. Using Sublime Text,
 these files can be populated using the `NetLinx: New From Template: Overview`
 and `NetLinx: New From Template: Include` commands, respectively. If you used
 the templates, comment out the code for the [logger](https://github.com/amclain/amx-lib-log#amx-log-library)
-for this example.
+for this example. Also add `#include 'cable_box'`.
 
 ```netlinx
 (***********************************************************)
@@ -253,7 +253,9 @@ for this example.
 (***********************************************************)
 
 // Comment this out for the example.
-// #include 'amx-lib-log';
+// #include 'amx-lib-log'
+
+#include 'cable_box'
 
 (***********************************************************)
 (*                 STARTUP CODE GOES BELOW                 *)
