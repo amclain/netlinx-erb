@@ -243,11 +243,11 @@ systems:
 
 * [YAML Workspace Configuration Reference](https://github.com/amclain/netlinx-workspace#yaml-workspace-configuration)
 
-Now create `My Project.axs` and `include/cable_box.axi`. Using Sublime Text,
+Now create `My Project.axs` and `include/cable-box.axi`. Using Sublime Text,
 these files can be populated using the `NetLinx: New From Template: Overview`
 and `NetLinx: New From Template: Include` commands, respectively. If you used
 the templates, comment out the code for the [logger](https://github.com/amclain/amx-lib-log#amx-log-library)
-for this example. Also add `#include 'cable_box'`.
+for this example. Also add `#include 'cable-box'`.
 
 ```netlinx
 (***********************************************************)
@@ -257,7 +257,7 @@ for this example. Also add `#include 'cable_box'`.
 // Comment this out for the example.
 // #include 'amx-lib-log'
 
-#include 'cable_box'
+#include 'cable-box'
 
 (***********************************************************)
 (*                 STARTUP CODE GOES BELOW                 *)
@@ -283,7 +283,7 @@ Open `My Project.apw` in NetLinx Studio and take a look at the workspace tree.
 ![NetLinx Studio Workspace Screenshot](guides/getting_started/my_project_apw_01.png)
 
 The master source code, touch panel, and IR files show up in the tree, just like
-we would expect. What you might not expect is that `cable_box` has shown up
+we would expect. What you might not expect is that `cable-box` has shown up
 under the `Include` folder even though it wasn't specified in the config.
 This is a feature of [netlinx-workspace](https://github.com/amclain/netlinx-workspace#netlinx-workspace), 
 which automatically consumes include files since there will probably be a lot of
