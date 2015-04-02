@@ -278,7 +278,7 @@ rake generate_apw
 
 Open `My Project.apw` in NetLinx Studio and take a look at the workspace tree.
 
-![NetLinx Studio Workspace Screenshot](getting_started/my_project_apw_01.png)
+![NetLinx Studio Workspace Screenshot](screenshots/getting_started/my_project_apw_01.png)
 
 The master source code, touch panel, and IR files show up in the tree, just like
 we would expect. What you might not expect is that `cable_box` has shown up
