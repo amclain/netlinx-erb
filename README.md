@@ -55,7 +55,7 @@ arguments.
 
 For the following function:
 
-```c
+```netlinx
 define_function patch_video(integer input, integer output)
 {
     // Patch video matrix.
@@ -159,7 +159,9 @@ for netlinx-erb.
 The command prompt is a powerful, flexible way to issue commands. Due to this,
 many of the tools that netlinx-erb is built on use command line interfaces.
 
-SS64 is a great [command line reference](http://ss64.com/).
+This guide will assume the reader is proficient with the command prompt.
+SS64 is a great [command line reference](http://ss64.com/) if you need to look
+up a command.
 
 
 ## Workflow
@@ -205,4 +207,85 @@ proprietary GUI.
 
 ## Getting Started
 
-## Code Examples
+### Creating A New Project
+
+Open the command prompt in the directory used for your NetLinx projects and type:
+
+```text
+netlinx-erb -n my_project
+```
+
+Enter the `my_project` directory, which we'll reference as the project `root`
+(or `/`). Take a minute to skim through the files that have been generated.
+
+### Configuring The Workspace
+
+`workspace.config.yaml`, referred to as the workspace configuration, is a text
+file that replaces the functionality of a NetLinx Studio `.apw` workspace file.
+Change this file to the following:
+
+```yaml
+systems:
+  -
+    name: My Project
+    connection: 192.168.1.2 # (or your master)
+    touch_panels:
+      -
+        path: main_panel.TP4
+        dps: 10001:1:0
+    ir:
+      -
+        path: cable_box.irl
+        dps: 5001:1:0
+```
+
+* [YAML Workspace Configuration Reference](https://github.com/amclain/netlinx-workspace#yaml-workspace-configuration)
+
+Now create `My Project.axs` and `include/cable_box.axi`. Using Sublime Text,
+these files can be populated using the `NetLinx: New From Template: Overview`
+and `NetLinx: New From Template: Include` commands, respectively. If you used
+the templates, comment out the code for the [logger](https://github.com/amclain/amx-lib-log#amx-log-library)
+for this example.
+
+```netlinx
+(***********************************************************)
+(*                    INCLUDES GO BELOW                    *)
+(***********************************************************)
+
+// Comment this out for the example.
+// #include 'amx-lib-log';
+
+(***********************************************************)
+(*                 STARTUP CODE GOES BELOW                 *)
+(***********************************************************)
+DEFINE_START
+
+// Comment this out for the example.
+// logSetLevel(LOG_LEVEL_DETAIL);
+```
+
+Also create `ir/cable_box.irl` and `touch_panel/main_panel.TP4`. These files can
+be empty, or the real thing. It doesn't matter for the example.
+
+To get an idea of how the workspace config file relates to a traditional NetLinx
+Studio workspace, run:
+
+```text
+rake generate_apw
+```
+
+Open `My Project.apw` in NetLinx Studio and take a look at the workspace tree.
+
+![NetLinx Studio Workspace Screenshot](getting_started/my_project_apw_01.png)
+
+The master source code, touch panel, and IR files show up in the tree, just like
+we would expect. What you might not expect is that `cable_box` has shown up
+under the `Include` folder even though it wasn't specified in the config.
+This is a feature of [netlinx-workspace](https://github.com/amclain/netlinx-workspace#netlinx-workspace), 
+which automatically consumes include files since there will probably be a lot of
+them. Don't worry though, unwanted [files can be explicity excluded](https://github.com/amclain/netlinx-workspace/blob/6e99397b4fcfa6bd1cd6766008fd75e8dd5092c0/spec/workspace/yaml/single_system/workspace.config.yaml#L11-L13).
+
+### Code Generation
+
+### Compiling
+
