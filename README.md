@@ -231,8 +231,10 @@ systems:
     connection: 192.168.1.2 # (or your master)
     touch_panels:
       -
-        path: main_panel.TP4
-        dps: 10001:1:0
+        path: touch_panel.TP4
+        dps:
+          - 10001:1:0
+          - 10002:1:0
     ir:
       -
         path: cable_box.irl
@@ -266,7 +268,7 @@ DEFINE_START
 // logSetLevel(LOG_LEVEL_DETAIL);
 ```
 
-Also create `ir/cable_box.irl` and `touch_panel/main_panel.TP4`. These files can
+Also create `ir/cable_box.irl` and `touch_panel/touch_panel.TP4`. These files can
 be empty, or the real thing. It doesn't matter for the example.
 
 To get an idea of how the workspace config file relates to a traditional NetLinx
@@ -278,7 +280,7 @@ rake generate_apw
 
 Open `My Project.apw` in NetLinx Studio and take a look at the workspace tree.
 
-![NetLinx Studio Workspace Screenshot](screenshots/getting_started/my_project_apw_01.png)
+![NetLinx Studio Workspace Screenshot](guides/getting_started/my_project_apw_01.png)
 
 The master source code, touch panel, and IR files show up in the tree, just like
 we would expect. What you might not expect is that `cable_box` has shown up
