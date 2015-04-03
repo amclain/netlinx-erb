@@ -217,8 +217,8 @@ Open the command prompt in the directory used for your NetLinx projects and type
 netlinx-erb -n my_project
 ```
 
-Enter the `my_project` directory, which we'll reference as the project `root`
-(or `/`). Take a minute to skim through the files that have been generated.
+Enter the `my_project` directory and take a minute to skim through the files
+that have been generated.
 
 ### Configuring The Workspace
 
@@ -551,3 +551,18 @@ Also remember the include for `cable-box` in `panel.axi.erb.tmpl`:
 
 #include 'cable-box'
 ```
+
+### Compiling
+
+From the command line:
+
+```text
+rake
+```
+
+Yes, it's really that simple. This command runs the code generator, generates
+the RPC file, compiles the project, and creates the source code bundle. You can
+also add your own [rake tasks](https://github.com/ruby/rake#description) if you
+need to customize this process.
+
+See all of the built-in rake tasks with `rake -T`.
