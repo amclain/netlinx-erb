@@ -132,6 +132,8 @@ to this, project maintenance also becomes easier.
 
 Basic experience with the [Ruby programming language](https://www.ruby-lang.org)
 is required, as well as [ERB templating](http://www.stuartellis.eu/articles/erb/).
+The concept of [Model Oriented Programming (MOP)](http://download.imatix.com/mop/introduction.html)
+is also used by this framework.
 
 **Resources:**
 
