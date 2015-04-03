@@ -1,0 +1,14 @@
+systems:
+  -
+    name: My Project
+    connection: 192.168.1.2
+    touch_panels:
+      -
+        path: touch_panel.TP4
+        dps:
+          - 10001:1:0
+          - 10002:1:0
+    ir:
+      -
+        path: cable_box.irl
+        dps: 5001:1:0

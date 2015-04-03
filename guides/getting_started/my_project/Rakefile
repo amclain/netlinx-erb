@@ -1,0 +1,11 @@
+
+# ------------------------------------------------------------
+#   This file contains a set of automated tasks.
+#   See project documentation at: doc/index.html
+#   
+#   Run `rake` from the command line to compile this project.
+#   
+#   Run `rake --task` from the command line to see all
+#   available tasks for this project.
+# ------------------------------------------------------------
+require 'netlinx/rake/erb'

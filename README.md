@@ -149,10 +149,10 @@ plugin is recommended, as it provides syntax highlighting and code completion
 for netlinx-erb.
 
 >***Use a Single Editor Well***
->
+
 >*The editor should be an extension of your hand; make sure your editor is
->configurable, extensible, and programmable.*
->-- [The Pragmatic Programmer](http://www.informit.com/store/pragmatic-programmer-from-journeyman-to-master-9780201616224)
+configurable, extensible, and programmable.*
+-- [The Pragmatic Programmer](http://www.informit.com/store/pragmatic-programmer-from-journeyman-to-master-9780201616224)
 
 #### Command Prompt
 
@@ -247,7 +247,7 @@ Now create `My Project.axs` and `include/cable-box.axi`. Using Sublime Text,
 these files can be populated using the `NetLinx: New From Template: Overview`
 and `NetLinx: New From Template: Include` commands, respectively. If you used
 the templates, comment out the code for the [logger](https://github.com/amclain/amx-lib-log#amx-log-library)
-for this example. Also add `#include 'cable-box'`.
+for this example.
 
 ```netlinx
 (***********************************************************)
@@ -256,8 +256,6 @@ for this example. Also add `#include 'cable-box'`.
 
 // Comment this out for the example.
 // #include 'amx-lib-log'
-
-#include 'cable-box'
 
 (***********************************************************)
 (*                 STARTUP CODE GOES BELOW                 *)
@@ -291,5 +289,263 @@ them. Don't worry though, unwanted [files can be explicity excluded](https://git
 
 ### Code Generation
 
-### Compiling
+*At this point it is important to have a working knowledge of Ruby and ERB. (See
+[prerequisites](https://github.com/amclain/netlinx-erb#prerequisites).)*
 
+In this example we'll connect touch panel buttons to the corresponding buttons
+on the cable box remote control. To keep the code encapulated, we'll have
+`include/cable-box.axi` model the cable box's remote control, and
+`include/ui/template/panel.axi.erb.tmpl` will model the functions of the
+identical touch panels.
+
+* ["My Project" Reference Files](guides/getting_started/my_project)
+
+First, create [include/cable-box.axi](guides/getting_started/my_project/include/cable-box.axi).
+This file uses the traditional `.axi` extension because no code generation is
+necessary. For a file this simple, code generation may actually create more work
+and make the code harder to understand.
+
+Next we'll configure the touch panels. Open `include/ui/_config.axi.erb`. This
+is where we'll instruct the system to generate `.axi` files for each of the
+touch panels:
+
+```ruby
+# Params - Converted into @tmpl_[key]
+# First key (panel name) is available as @tmpl_suffix
+touch_panels = {
+    CONFERENCE_TABLE: { dps: 10001 },
+    WALL:             { dps: 10002 },
+}
+```
+
+The important thing to notice about this file is that values can be passed into
+each touch panel's hash, which then become available in the template as instance
+variables. By using the instance variable `@tmpl_dps` in the template, the value
+`10001` will be written to `panel-conference-table.axi`, and `10002` will be
+written to `panel-wall.axi`. We'll go over this more when creating the template
+file.
+
+* Note: [_config.axi.erb will be deprecated in v2.0](https://github.com/amclain/netlinx-erb/issues/1)
+
+>**Why not use `DEFINE_COMBINE`?**
+
+>Device combining concatenates all of the events into a single DPS, hiding which
+touch panel actually sent the event. Conceptually, all of the physical touch
+panels have to be thought of as one virtual touch panel -- they all mirror each
+other. This means that touch panels that want to share the same code are forced
+to share the same state as well.
+
+>The answer to this problem is an advanced topic that will be covered in
+another section. It is practical in situations like room combining where touch
+panel B needs to operate autonomously when the rooms are separated, but needs to
+mirror touch panel A when the rooms are combined (a state machine).
+
+Since the touch panels share the same design file, `touch_panel.TP4`,
+we'll use code generation to create the source code for each panel based on a
+single template.
+
+Create [include/ui/template/panel.axi.erb.tmpl](guides/getting_started/my_project/include/ui/template/panel.axi.erb.tmpl).
+The first thing to notice is that unique names for the include guards can be
+code generated:
+
+```netlinx+erb
+(***********************************************************
+    Example Touch Panel
+    
+    For the netlinx-erb getting started project.
+************************************************************)
+
+#if_not_defined <%= "MY_PROJECT_TP_#{@tmpl_suffix}" %>
+#define <%= "MY_PROJECT_TP_#{@tmpl_suffix}" %> 1
+```
+
+Let's apply this to assigning the DPS to each touch panel. Since a device
+definition takes the form of `CONSTANT_NAME = DPS`, we can use code generation
+to populate the constant name and device number for each file:
+
+```netlinx+erb
+(***********************************************************)
+(*           DEVICE NUMBER DEFINITIONS GO BELOW            *)
+(***********************************************************)
+DEFINE_DEVICE
+
+<%= "#{@dvTP} = #{@tmpl_dps}:1:0;" %>
+```
+
+When the `.axi` files are generated, `panel-conference-table.axi` will contain
+`dvTP_CONFERENCE_TABLE = 10001:1:0;`, and `panel-wall.axi` will contain
+`dvTP_WALL = 10002:1:0;`.
+
+>When authoring an `erb` template it is important to think on a higher level of
+abstration than you would with an `axi` file, keeping in mind that you're
+writing code that writes code. Creating variations of a similar piece of code is
+a perfect job for the code generator.
+
+At this point we have a few different sets of data that need to be connected
+together:
+
+* Touch panel button numbers
+* Named constants for those buttons
+* The key on the cable box remote control that needs to be triggered when its
+  corresponding touch panel button is pressed
+
+These connections can be described in one place, making future changes simple:
+
+```netlinx+erb
+(***********************************************************)
+(*              CONSTANT DEFINITIONS GO BELOW              *)
+(***********************************************************)
+DEFINE_CONSTANT
+
+<%
+    # Remember, this template generates multiple files.
+    # Guard your global code to prevent include conflicts!
+-%>
+#if_not_defined MY_PROJECT_TP_CONSTANTS
+#define MY_PROJECT_TP_CONSTANTS 1
+
+<% global_constant_justify = 26 -%>
+// Cable Box Buttons
+<%=
+    generate_constant_ivars cable_box_buttons = {
+        # :btn - Touch panel button number.
+        # :key - Cable box remote control key from `cable-box.axi`.
+        BTN_CABLE_BOX_1: { btn: 101, key: :CABLE_BOX_KEY_1 },
+        BTN_CABLE_BOX_2: { btn: 102, key: :CABLE_BOX_KEY_2 },
+        BTN_CABLE_BOX_3: { btn: 103, key: :CABLE_BOX_KEY_3 },
+        BTN_CABLE_BOX_4: { btn: 104, key: :CABLE_BOX_KEY_4 },
+        BTN_CABLE_BOX_5: { btn: 105, key: :CABLE_BOX_KEY_5 },
+        BTN_CABLE_BOX_6: { btn: 106, key: :CABLE_BOX_KEY_6 },
+        BTN_CABLE_BOX_7: { btn: 107, key: :CABLE_BOX_KEY_7 },
+        BTN_CABLE_BOX_8: { btn: 108, key: :CABLE_BOX_KEY_8 },
+        BTN_CABLE_BOX_9: { btn: 109, key: :CABLE_BOX_KEY_9 },
+        BTN_CABLE_BOX_0: { btn: 110, key: :CABLE_BOX_KEY_0 },
+    }
+    
+    print_constant_hash cable_box_buttons.remap(:btn), justify: global_constant_justify
+%>
+
+#end_if
+```
+
+* [Helper Method API Reference](http://www.rubydoc.info/gems/netlinx-erb/NetLinx/ERB/Helpers)
+
+Now it's time to add a button event handler to connect the touch panel button
+to the cable box IR code:
+
+```netlinx+erb
+(***********************************************************)
+(*                   THE EVENTS GO BELOW                   *)
+(***********************************************************)
+DEFINE_EVENT
+
+// Cable Box Controls
+<%=
+    button_event_block(cable_box_buttons.remap(:key), momentary: true) { |key|
+        "cable_box_key(#{key})"
+    }
+%>
+```
+
+Does this section of code look unusually short compared to its NetLinx
+counterpart? Well there's a good reason for that: The code it writes is
+incredibly repetitive and therefore a lot of work can be handed off to the
+code generator. Even better, since this code references the `cable_box_buttons`
+hash, every time a button is added or modified this section of generated code is
+updated automatically.
+
+```netlinx
+// GENERATED FILE `panel-conference-table.axi`
+
+(***********************************************************)
+(*                   THE EVENTS GO BELOW                   *)
+(***********************************************************)
+DEFINE_EVENT
+
+// Cable Box Controls
+button_event[dvTP_CONFERENCE_TABLE, BTN_CABLE_BOX_1]
+button_event[dvTP_CONFERENCE_TABLE, BTN_CABLE_BOX_2]
+button_event[dvTP_CONFERENCE_TABLE, BTN_CABLE_BOX_3]
+button_event[dvTP_CONFERENCE_TABLE, BTN_CABLE_BOX_4]
+button_event[dvTP_CONFERENCE_TABLE, BTN_CABLE_BOX_5]
+button_event[dvTP_CONFERENCE_TABLE, BTN_CABLE_BOX_6]
+button_event[dvTP_CONFERENCE_TABLE, BTN_CABLE_BOX_7]
+button_event[dvTP_CONFERENCE_TABLE, BTN_CABLE_BOX_8]
+button_event[dvTP_CONFERENCE_TABLE, BTN_CABLE_BOX_9]
+button_event[dvTP_CONFERENCE_TABLE, BTN_CABLE_BOX_0]
+{
+    push:
+    {
+        to[button.input];
+        
+        switch (button.input.channel)
+        {
+            case BTN_CABLE_BOX_1:    cable_box_key(CABLE_BOX_KEY_1);
+            case BTN_CABLE_BOX_2:    cable_box_key(CABLE_BOX_KEY_2);
+            case BTN_CABLE_BOX_3:    cable_box_key(CABLE_BOX_KEY_3);
+            case BTN_CABLE_BOX_4:    cable_box_key(CABLE_BOX_KEY_4);
+            case BTN_CABLE_BOX_5:    cable_box_key(CABLE_BOX_KEY_5);
+            case BTN_CABLE_BOX_6:    cable_box_key(CABLE_BOX_KEY_6);
+            case BTN_CABLE_BOX_7:    cable_box_key(CABLE_BOX_KEY_7);
+            case BTN_CABLE_BOX_8:    cable_box_key(CABLE_BOX_KEY_8);
+            case BTN_CABLE_BOX_9:    cable_box_key(CABLE_BOX_KEY_9);
+            case BTN_CABLE_BOX_0:    cable_box_key(CABLE_BOX_KEY_0);
+        }
+    }
+    
+    release: {}
+}
+```
+
+A remote control is a simple example of code generation in action. For a device
+like a video matrix, imagine what happens when one of the inputs or outputs
+needs to be repatched or renamed. All of the configuration information is in one
+place; no need to find-and-replace throughout a file. This also helps to make
+the code self-documenting, as all of the system configuration information is
+grouped together.
+
+```ruby
+matrix_inputs = {
+    VID_SRC_BLANK:          { input: 0,  name: "Blank" },
+    VID_SRC_ROOM_1_PODIUM:  { input: 1,  name: "Podium 1" },
+    VID_SRC_ROOM_1_WP:      { input: 2,  name: "Wall Panel 1" },
+    VID_SRC_ROOM_2_PODIUM:  { input: 7,  name: "Podium 2" },
+    VID_SRC_ROOM_2_WP:      { input: 4,  name: "Wall Panel 2" },
+    VID_SRC_ROOM_3_PODIUM:  { input: 5,  name: "Podium 3" },
+    VID_SRC_ROOM_3_WP:      { input: 6,  name: "Wall Panel 3" },
+    VID_SRC_BLURAY:         { input: 9,  name: "Blu-Ray" },
+    VID_SRC_CABLE:          { input: 10, name: "Cable TV" },
+}
+```
+
+>**Separating Configuration From Implementation**
+
+>netlinx-erb is designed to keep configuration and implementation code separated
+as much as reasonably possible. This makes configuration changes fast and easy,
+with significantly less risk that those changes will introduce bugs or break
+the system.
+
+Now that we have a touch panel template, open `My Project.axs` and add the
+includes for `panel-conference-table` and `panel-wall`:
+
+```netlinx
+(***********************************************************)
+(*                    INCLUDES GO BELOW                    *)
+(***********************************************************)
+
+// Comment this out for the example.
+// #include 'amx-lib-log'
+
+#include 'panel-conference-table'
+#include 'panel-wall'
+```
+
+Also remember the include for `cable-box` in `panel.axi.erb.tmpl`:
+
+```netlinx
+(***********************************************************)
+(*                    INCLUDES GO BELOW                    *)
+(***********************************************************)
+
+#include 'cable-box'
+```

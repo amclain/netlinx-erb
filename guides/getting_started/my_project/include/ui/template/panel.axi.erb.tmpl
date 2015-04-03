@@ -1,0 +1,99 @@
+(***********************************************************
+    Example Touch Panel
+    
+    For the netlinx-erb getting started project.
+************************************************************)
+
+#if_not_defined <%= "MY_PROJECT_TP_#{@tmpl_suffix}" %>
+#define <%= "MY_PROJECT_TP_#{@tmpl_suffix}" %> 1
+(***********************************************************)
+(* System Type : NetLinx                                   *)
+(***********************************************************)
+(*           DEVICE NUMBER DEFINITIONS GO BELOW            *)
+(***********************************************************)
+DEFINE_DEVICE
+
+<%= "#{@dvTP} = #{@tmpl_dps}:1:0;" %>
+
+(***********************************************************)
+(*              CONSTANT DEFINITIONS GO BELOW              *)
+(***********************************************************)
+DEFINE_CONSTANT
+
+<%
+    # Remember, this template generates multiple files.
+    # Guard your global code to prevent include conflicts!
+-%>
+#if_not_defined MY_PROJECT_TP_CONSTANTS
+#define MY_PROJECT_TP_CONSTANTS 1
+
+<% global_constant_justify = 26 -%>
+// Cable Box Buttons
+<%=
+    generate_constant_ivars cable_box_buttons = {
+        # :btn - Touch panel button number.
+        # :key - Cable box remote control key from `cable-box.axi`.
+        BTN_CABLE_BOX_1: { btn: 101, key: :CABLE_BOX_KEY_1 },
+        BTN_CABLE_BOX_2: { btn: 102, key: :CABLE_BOX_KEY_2 },
+        BTN_CABLE_BOX_3: { btn: 103, key: :CABLE_BOX_KEY_3 },
+        BTN_CABLE_BOX_4: { btn: 104, key: :CABLE_BOX_KEY_4 },
+        BTN_CABLE_BOX_5: { btn: 105, key: :CABLE_BOX_KEY_5 },
+        BTN_CABLE_BOX_6: { btn: 106, key: :CABLE_BOX_KEY_6 },
+        BTN_CABLE_BOX_7: { btn: 107, key: :CABLE_BOX_KEY_7 },
+        BTN_CABLE_BOX_8: { btn: 108, key: :CABLE_BOX_KEY_8 },
+        BTN_CABLE_BOX_9: { btn: 109, key: :CABLE_BOX_KEY_9 },
+        BTN_CABLE_BOX_0: { btn: 110, key: :CABLE_BOX_KEY_0 },
+    }
+    
+    print_constant_hash cable_box_buttons.remap(:btn), justify: global_constant_justify
+%>
+
+#end_if
+
+(***********************************************************)
+(*                    INCLUDES GO BELOW                    *)
+(***********************************************************)
+
+#include 'cable-box'
+
+(***********************************************************)
+(*              DATA TYPE DEFINITIONS GO BELOW             *)
+(***********************************************************)
+DEFINE_TYPE
+
+(***********************************************************)
+(*              VARIABLE DEFINITIONS GO BELOW              *)
+(***********************************************************)
+DEFINE_VARIABLE
+
+(***********************************************************)
+(*         SUBROUTINE/FUNCTION DEFINITIONS GO BELOW        *)
+(***********************************************************)
+
+(***********************************************************)
+(*                 STARTUP CODE GOES BELOW                 *)
+(***********************************************************)
+DEFINE_START
+
+(***********************************************************)
+(*                   THE EVENTS GO BELOW                   *)
+(***********************************************************)
+DEFINE_EVENT
+
+// Cable Box Controls
+<%=
+    button_event_block(cable_box_buttons.remap(:key), momentary: true) { |key|
+        "cable_box_key(#{key})"
+    }
+%>
+
+(***********************************************************)
+(*                 THE MAINLINE GOES BELOW                 *)
+(***********************************************************)
+DEFINE_PROGRAM
+
+(***********************************************************)
+(*                     END OF PROGRAM                      *)
+(*          DO NOT PUT ANY CODE BELOW THIS COMMENT         *)
+(***********************************************************)
+#end_if

@@ -1,0 +1,9 @@
+source "https://rubygems.org"
+
+gem 'netlinx-erb', '~>1.1.0'
+
+# Development Tools
+# -----------------
+# gem 'rspec'
+# gem 'rspec-its'
+# gem 'fivemat'

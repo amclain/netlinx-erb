@@ -1,0 +1,31 @@
+# --------------------------------------------------- #
+#  Files to exclude from .SRC package (glob format).  #
+# --------------------------------------------------- #
+
+# AMX
+
+*.src
+*.tp4
+
+# Graphics
+
+*.ai
+*.bmp
+*.eps
+*.gif
+*.jpg
+*.jpeg
+*.png
+*.psd
+*.svg
+
+# Archives
+
+*.gz
+*.tar
+*.zip
+
+# Documentation
+
+*.pdf
+
