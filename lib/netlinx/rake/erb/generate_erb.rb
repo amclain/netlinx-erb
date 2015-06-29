@@ -48,10 +48,7 @@ module NetLinx
           HEADER
               
               File.open file_name, 'w+' do |file|
-                Object.new.tap do |o|
-                  o.instance_eval { extend NetLinx::ERB::Helpers }
-                  file.write o.execute_erb(template)
-                end
+                  file.write NetLinx::ERB.execute(template)
               end
             end
             

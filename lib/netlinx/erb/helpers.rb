@@ -313,17 +313,6 @@ EOS
         str += "\";"
       end
       
-      # Run ERB on the given template file.
-      # @param template_file [String] file path
-      # @param binding [Binding]
-      # @return [String] ERB output.
-      # @raise [LoadError] template not found
-      def execute_erb template_file, binding: NetLinx::ERB.binding
-        raise LoadError, "Template not found: #{template_file}" unless File.exists? template_file
-        $AUTOGEN_HEADER + ::ERB.new(File.read(template_file), nil, '%<>-')
-          .result(binding)
-      end
-      
       
       # @group Other
       

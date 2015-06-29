@@ -42,8 +42,7 @@
             output_path = "#{output_dir}/#{file_base_name}-#{name.to_s.downcase.gsub('_', '-')}.axi"
             
             puts '   ' + output_path.gsub(Dir.pwd, '')[1..-1] # Print canonical path.
-            File.write output_path, execute_erb(path, binding: binding)
+            File.write output_path, NetLinx::ERB.execute(path, binding: binding)
         end
-        
     end
 -%>
