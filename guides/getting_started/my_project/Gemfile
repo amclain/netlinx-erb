@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'netlinx-erb', '~>1.1.0'
+gem 'netlinx-erb', '~>2.0.0'
 
 # Development Tools
 # -----------------

@@ -1,6 +1,4 @@
 
-require_relative 'helpers'
-
 module NetLinx
   module ERB
     
