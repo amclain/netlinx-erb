@@ -28,7 +28,7 @@
         
         params.each { |k,v| instance_variable_set :"@tmpl_#{k.to_s.downcase}", v }
         
-        @dvTP        = "dvTP_#{@tmpl_suffix}"
+        @dvTP = "dvTP_#{@tmpl_suffix}"
         
         # Inject suffix into Hash for helper methods.
         Hash.instance_variable_set :@tmpl_suffix, @tmpl_suffix

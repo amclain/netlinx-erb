@@ -24,14 +24,12 @@ module NetLinx
             puts "------------------------------------"
             
             templates = Dir['include/**/*.erb']
-
-            outputs = templates.map { |str| str.gsub /\.erb$/, '' }
-
+            
             templates.each do |template|
               file_name = template.gsub /\.erb$/, ''
               puts "   #{file_name}"
               
-              header = $AUTOGEN_HEADER = <<-HEADER
+              $AUTOGEN_HEADER = <<-HEADER
 (***********************************************************)
 (*                         WARNING                         *)
 (***********************************************************}
@@ -48,11 +46,12 @@ module NetLinx
 {***********************************************************)
 
           HEADER
-              buffer = header + File.read(template)
               
               File.open file_name, 'w+' do |file|
-                file.write ::ERB.new(buffer, nil, '%<>-')
-                  .result(NetLinx::ERB.binding)
+                Object.new.tap do |o|
+                  o.instance_eval { extend NetLinx::ERB::Helpers }
+                  file.write o.execute_erb(template)
+                end
               end
             end
             
