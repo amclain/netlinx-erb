@@ -8,7 +8,24 @@ module NetLinx
     # @example
     #   ERB.new(buffer, nil, '%<>-').result(NetLinx::ERB.binding)
     def self.binding
-      @b ||= Module.new.instance_eval {
+      # Issue #2
+      # https://github.com/amclain/netlinx-erb/issues/2
+      # 
+      # Although ||= seemed like a good idea to pass data from _config.axi.erb
+      # to the templates, in reality it causes data to be retained between
+      # all files thoughout the entire generation process. This was causing
+      # _config.axi to be populated when it should have only contained the
+      # generation header.
+      # 
+      # This method needs to be refactored in a way that the module can be
+      # populated with general framework helpers, then captured by a project-
+      # specific configuration (_config.axi.erb) to be injected with project
+      # data, then have that module's binding passed back to
+      # NetLinx::ERB::Helpers.execute_erb. There needs to be a default binding
+      # for non-templated files.
+      
+      # @b ||= Module.new.instance_eval {
+      @b = Module.new.instance_eval {
         extend NetLinx::ERB::Helpers
         # TODO: _config.rb instance variables should be injected here.
         binding
