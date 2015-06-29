@@ -327,7 +327,7 @@ variables. By using the instance variable `@tmpl_dps` in the template, the value
 written to `panel-wall.axi`. We'll go over this more when creating the template
 file.
 
-* Note: [_config.axi.erb will be deprecated in v2.0](https://github.com/amclain/netlinx-erb/issues/1)
+* Note: [_config.axi.erb will be deprecated](https://github.com/amclain/netlinx-erb/issues/1)
 
 >**Why not use `DEFINE_COMBINE`?**
 
