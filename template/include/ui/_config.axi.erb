@@ -14,35 +14,5 @@
     
     
     # Generate files.
-    template_dir = File.expand_path './include/ui/template'
-    template_files = Dir["#{template_dir}/*.axi.erb.tmpl"]
-    
-    touch_panels.each do |name, params|
-        
-        # Generate template instance variables.
-        @tmpl_suffix       = name.to_s
-        @tmpl_var_suffix   = name.to_s.downcase # Variable suffix.
-        
-        @tmpl_suffixes     = touch_panels.keys
-        @tmpl_var_suffixes = touch_panels.keys.map &:downcase
-        
-        params.each { |k,v| instance_variable_set :"@tmpl_#{k.to_s.downcase}", v }
-        
-        @dvTP = "dvTP_#{@tmpl_suffix}"
-        
-        # Inject suffix into Hash for helper methods.
-        Hash.instance_variable_set :@tmpl_suffix, @tmpl_suffix
-        Hash.instance_variable_set :@tmpl_var_suffix, @tmpl_var_suffix
-        
-        
-        # Generate files.
-        template_files.each do |path|
-            file_base_name = File.basename(path).gsub(/\..*/, '')
-            output_dir = File.expand_path "#{template_dir}/.."
-            output_path = "#{output_dir}/#{file_base_name}-#{name.to_s.downcase.gsub('_', '-')}.axi"
-            
-            puts '   ' + output_path.gsub(Dir.pwd, '')[1..-1] # Print canonical path.
-            File.write output_path, NetLinx::ERB.execute(path, binding: binding)
-        end
-    end
+    NetLinx::ERB.generate_axi_files_from_template touch_panels
 -%>
